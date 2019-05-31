@@ -1,0 +1,256 @@
+﻿@model PaginaGabriel.Models.PedidosCliente
+@using PaginaGabriel.Models.Enum
+@using PaginaGabriel.Helpers
+
+@{
+    ViewBag.Title = "Check Out";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")"
+        type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"
+        type="text/javascript"></script>
+
+@Html.HiddenFor(x => x.Cantidad)
+@Html.HiddenFor(x => x.Email)
+
+@Html.HiddenFor(x => x.Nombres)
+@Html.HiddenFor(x => x.Apellido)
+@Html.HiddenFor(x => x.Telefono)
+@Html.HiddenFor(x => x.DNI)
+@Html.HiddenFor(x => x.UrlMercadoPago)
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+    @*<div class="form-group">
+            <label class="col-sm-2 control-label">  @Html.LabelFor(model => model.UsuarioPedido)</label>
+            <div class="col-sm-3">
+                <p class="form-control form-height">@ViewData["Usuario"]</p>
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @Value = ViewData["Usuario"] } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Nombres, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Nombres, new { htmlAttributes = new { @class = "form-control", @Value = ViewData["Nombre"] } })
+            @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group">
+            <label class="col-sm-2 control-label">  @Html.LabelFor(model => model.Nombres)</label>
+            <div class="col-sm-3">
+                <p class="form-control form-height">@ViewData["Nombre"]</p>
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Apellido, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Apellido, new { htmlAttributes = new { @class = "form-control", @Value = ViewData["Apellido"] } })
+            @Html.ValidationMessageFor(model => model.Apellido, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DNI, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DNI, new { htmlAttributes = new { @class = "form-control", @Value = ViewData["DNI"] } })
+            @Html.ValidationMessageFor(model => model.DNI, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Telefono, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { @class = "form-control", @Value = ViewData["Telefono"] } })
+            @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group">
+        <label class="col-sm-2 control-label">  @Html.LabelFor(model => model.Cantidad)</label>
+        <div class="col-sm-3">
+            <p class="form-control form-height">  @ViewData["Cant"]</p>
+        </div>
+    </div>
+
+    @*<div id="FormaPago" class="form-group">
+            @Html.LabelFor(model => model.FormaPago, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.RadioButtonFor(model => model.FormaPago, @PaginaGabriel.Models.Enum.FormaPago.AcordarVendedor)
+                Acordar con el Vendedor
+            </div>
+            <div id="TC" class="col-md-10">
+                @Html.RadioButtonFor(model => model.FormaPago, @PaginaGabriel.Models.Enum.FormaPago.TarjetaCredito)
+                Tarjeta de Crédito (Mercado Pago)
+            </div>
+            <div class="col-md-10">
+                @Html.RadioButtonFor(model => model.FormaPago, @PaginaGabriel.Models.Enum.FormaPago.Efectivo)
+                @Html.RadioButtonFor(model => model.FormaPago, "Efectivo en el local", new { @value = "Efectivo en el local" })
+                Efectivo en el local
+            </div>
+            @Html.ValidationMessageFor(model => model.FormaPago, "", new { @class = "text-danger" })
+
+
+        </div>*@
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.FormaPago, new { @class = "control-label col-md-2" })
+        <div class="col-md-8">
+            @{var a = EnumHelper<PaginaGabriel.Models.Enum.FormaPago>.GetDisplayValue(PaginaGabriel.Models.Enum.FormaPago.AcordarVendedor);}
+            @{var b = EnumHelper<PaginaGabriel.Models.Enum.FormaPago>.GetDisplayValue(PaginaGabriel.Models.Enum.FormaPago.TarjetaCredito);}
+            @{var c = EnumHelper<PaginaGabriel.Models.Enum.FormaPago>.GetDisplayValue(PaginaGabriel.Models.Enum.FormaPago.Efectivo);}
+
+            <p>
+                @Html.RadioButtonFor(model => model.FormaPago, FormaPago.AcordarVendedor, new { })
+                @a
+            </p>
+            <p>
+                @*@Html.RadioButtonFor(model => model.FormaPago, PaginaGabriel.Models.Enum.FormaPago.AcordarVendedor, new { @value = "Tarjeta de Crédito (Mercado Pago)" })*@
+
+                @Html.RadioButtonFor(model => model.FormaPago, FormaPago.TarjetaCredito, new { })
+                @b
+                @*Tarjeta de Crédito (Mercado Pago)*@
+            </p>
+            <p>
+                @Html.RadioButtonFor(model => model.FormaPago, FormaPago.Efectivo, new { })
+                @c
+            </p>
+            @Html.ValidationMessageFor(model => model.FormaPago, "", new { @class = "text-danger" })
+
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">  @Html.LabelFor(model => model.Cantidad)</label>
+                <div class="col-sm-3">
+                    <p class="form-control form-height">  @ViewData["MP"]</p>
+                </div>
+            </div>
+
+
+            <div id="Tarjeta" class="form-group">
+                @Html.LabelFor(model => model.Telefono, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-8">
+                    
+
+                    <a href=@ViewData["MP"]><img src="~/Content/Imagenes/icono mercado pago.jpg" />Pagar</a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <a href=@ViewData["MP"]>Pagar</a>
+
+    
+
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Confirmar Compra" />
+
+    </div>
+</div>
+</div>
+}
+
+@*@section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#ProvinciaId").change(function() {
+                    $("#CiudadId").empty();
+                    $("#CiudadId").append('<option value="0">[Seleccione la Ciudad...]</option>');
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("GetCiudades")',
+                        dataType: 'json',
+                        data: { provinciaId: $("#ProvinciaId").val() },
+                        success: function(ciudades) {
+                            $.each(ciudades,
+                                function(i, ciudad) {
+                                    $("#CiudadId").append('<option value="' + ciudad.CiudadId + '">' + ciudad.Nombre + '</option>');
+                                });
+                        },
+                        error: function(ex) {
+                            alert('Error al devolver las ciudades.' + ex);
+                        }
+                    });
+                    return false;
+                });
+            });
+        </script>
+    }*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+
+            //if (FormaPago == "Tarjeta de Crédito (Mercado Pago)")
+            //{
+            //    $('#Tarjeta').hide();
+            //} else
+            //{
+            //    $('#Tarjeta').show();
+            //}
+
+            $('input:radio[id=FormaPago]').change(function () {
+                var v = $('input[id=FormaPago]:checked').val();
+                TipoC(v);
+            });
+
+            function TipoC(value) {
+                if (value == "TarjetaCredito")
+                    $('#Tarjeta').show();
+                else
+                    $('#Tarjeta').hide();
+            }
+
+            //$("#FormaPago").click(function () {
+            //    if ($('#FormaPago').is(":checked"))
+            //    {
+            //        $('#Tarjeta').show();
+
+
+            //    }
+            //    else {
+            //        $('#Tarjeta').show();
+            //        $('#CecoDesdeDIV').hide();
+            //        $('#CecoHastaDIV').hide();
+            //    }
+
+            //});
+        });
+
+    </script>
+}
+

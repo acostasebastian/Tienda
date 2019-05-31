@@ -1,0 +1,166 @@
+﻿@model PagedList.IPagedList<PaginaGabriel.Models.Producto>
+
+@using PagedList.Mvc;
+@using PagedList;
+@{
+    ViewBag.Title = "Store";
+}
+
+@{
+    int cantidad = ViewBag.Cantidad;
+    int ultimoRegistro = ViewBag.Documentos.PageNumber * cantidad;
+    int primerRegistro = ultimoRegistro - cantidad + 1;
+    int totalRegistros = cantidad * ViewBag.Documentos.PageCount;
+}
+
+<h2>Store</h2>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-6 form-inline">
+                @Html.Partial("_CantidadMostrar")
+            </div>
+            <div class="col-sm-6 form-inline">
+                @using (Html.BeginForm("Store", "Productos", FormMethod.Get, new { @class = "form-inline" }))
+                {
+                    <div class="form-group">
+                        <label for="SearchString">Buscar: </label>
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+                        @Html.Hidden("e", ViewBag.Tabla as string)
+                    </div>
+                }
+            </div>
+        </div>
+        <br />
+
+
+
+        <table class="table">
+            <tr>
+                <th class="text-center">
+                    Categoría
+
+                </th>
+                <th>
+
+                    Marca
+                </th>
+                <th class="text-center">
+
+                    SubCategoría
+                </th>
+                <th class="text-center">
+
+                    Producto
+                </th>
+                <th class="text-center">
+
+                    Precio
+                </th>
+                <th class="text-center">
+
+                    Stock
+                </th>
+                <th class="text-center">
+
+                    Imagen
+                </th>
+                <th class="text-center">
+
+                    Descripción
+                </th>
+
+                <th>
+
+                    Cantidad
+                </th>
+
+
+                <th></th>
+            </tr>
+
+            @*@foreach (var item in Model)*@
+            @foreach (var item in ViewBag.Documentos)
+            {
+                <tr class="text-center">
+                    <td>
+                        @* @Html.DisplayFor(modelItem => item.Categoria.Nombre)*@
+                        @item.Categoria.Nombre
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Marca.Nombre)*@
+                        @item.Marca.Nombre
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.SubCategoria.Nombre)*@
+                        @item.SubCategoria.Nombre
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Descripcion)*@
+                        @item.Descripcion
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Precio)*@
+                        @item.Precio
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Stock)*@
+                        @item.Stock
+                    </td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Imagen))
+                        {
+                            <img src="@Url.Content(item.Imagen)" alt="Image" style="width:200px;height:200px;max-width: 100%; height: auto;" />
+                        }
+                    </td>
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.Observaciones)*@
+                        @item.Observaciones
+                    </td>
+
+                    <td>
+
+                        @*@Html.EditorFor(model => item.CantidadComprar, new { htmlAttributes = new { @class = "form-control", id = "Cantidad" } })*@
+                        <input type="number" name="cantidadPedida" class="form-control" />
+
+                    </td>
+
+                    <td>
+
+                        @Html.ActionLink("Detalles", "Details", new { id = item.ProductoId })
+                        @Html.ActionLink("Agregar al Carrito", "AddToCart", "ShoppingCart", new { id = item.ProductoId, cantidad = cantidadPedida }, new { @class = "btn btn-info" })
+
+                        <button type="button" onclick="location.href= '@Url.Action("AddToCart","ShoppingCart", new { id = item.ProductoId, cantidad = item.CantidadComprar })'" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+
+                    </td>
+                </tr>
+            }
+
+
+
+        </table>
+
+        <br />
+        @Html.Partial("_Paginacion")
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+
+
+            var info = $('#cantidadPedida').val();
+
+            $('#cantidadPedida').val(info);
+
+
+        }
+
+    </script>
+}
+
